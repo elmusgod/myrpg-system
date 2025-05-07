@@ -1,36 +1,109 @@
-import { ActorSheet } from "foundry.js";
-
 export class MyRPGActorSheet extends ActorSheet {
-  /** Calcul et mise à jour des ressources */
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      classes: ["myrpg", "sheet", "actor"],
+      template: "systems/myrpg/template/actor-sheet.html",
+      width: 600,
+      height: 600,
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "attributes" }]
+    });
+  }
+
   getData() {
-    const data = super.getData().actor.data.data;
-    const { str, con, int, agi } = data.attributes;
-    // Recalculer EE
-    data.resources.ee.max = str + con + int + agi;
-    data.resources.ee.value = Math.min(data.resources.ee.value, data.resources.ee.max);
-    // Recalculer PV
-    data.resources.hp.max = 10 + data.level + con * 2;
-    data.resources.hp.value = Math.min(data.resources.hp.value, data.resources.hp.max);
-    return data;
+    const context = super.getData();
+
+    // Ajout des données calculées
+    const actorData = this.actor.toObject(false);
+    context.system = actorData.system;
+    
+    // S'assurer que les valeurs ne dépassent pas les maximums
+    context.system.resources.hp.value = Math.min(
+      context.system.resources.hp.value,
+      context.system.resources.hp.max
+    );
+    context.system.resources.ee.value = Math.min(
+      context.system.resources.ee.value,
+      context.system.resources.ee.max
+    );
+
+    return context;
   }
 
-  /** Roll d'attaque mêlée ou distance */
-  _rollAttack(event, { range = true, attribute = "str" } = {}) {
-    const target = Array.from(game.user.targets)[0];
-    if (!target) return ui.notifications.warn("Cible requise");
-    const atk = this.actor.data.data.data.attributes[attribute];
-    const defType = range ? "evasion" : "fortitude";
-    const defense = target.actor.data.data.data.defenses[defType];
-    const formula = `1d20 + ${atk} - ${defense}`;
-    new Roll(formula).roll({ async: true }).then(r => r.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor })
-    }));
-  }
-
-  /** Activation des écouteurs sur les boutons */
   activateListeners(html) {
     super.activateListeners(html);
-    html.find(".roll-attack-mellee").click(ev => this._rollAttack(ev, { range:false, attribute:"str" }));
-    html.find(".roll-attack-distance").click(ev => this._rollAttack(ev, { range:true, attribute:"agi" }));
+
+    // Gestionnaires d'événements pour les boutons d'actions
+    html.find('.roll-attack-mellee').click(this._onMeleeAttack.bind(this));
+    html.find('.roll-attack-distance').click(this._onRangedAttack.bind(this));
+  }
+
+  async _onMeleeAttack(event) {
+    const actor = this.actor;
+    const target = game.user.targets.first()?.actor;
+    
+    if (!target) {
+      ui.notifications.warn("Vous devez sélectionner une cible");
+      return;
+    }
+
+    // Formule: 1d20 + CON - Fortitude de la cible
+    const roll = await new Roll("1d20 + @con - @def", {
+      con: actor.system.attributes.con,
+      def: target.system.defenses.fortitude
+    }).evaluate({async: true});
+
+    // Message dans le chat
+    const templateData = {
+      actor: actor,
+      target: target,
+      roll: roll
+    };
+
+    const content = await renderTemplate(
+      "systems/myrpg/template/chat/attack-roll.html",
+      templateData
+    );
+
+    ChatMessage.create({
+      content: content,
+      speaker: ChatMessage.getSpeaker({ actor: actor }),
+      roll: roll,
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL
+    });
+  }
+
+  async _onRangedAttack(event) {
+    const actor = this.actor;
+    const target = game.user.targets.first()?.actor;
+    
+    if (!target) {
+      ui.notifications.warn("Vous devez sélectionner une cible");
+      return;
+    }
+
+    // Formule: 1d20 + AGI - Evasion de la cible
+    const roll = await new Roll("1d20 + @agi - @def", {
+      agi: actor.system.attributes.agi,
+      def: target.system.defenses.evasion
+    }).evaluate({async: true});
+
+    // Message dans le chat
+    const templateData = {
+      actor: actor,
+      target: target,
+      roll: roll
+    };
+
+    const content = await renderTemplate(
+      "systems/myrpg/template/chat/attack-roll.html",
+      templateData
+    );
+
+    ChatMessage.create({
+      content: content,
+      speaker: ChatMessage.getSpeaker({ actor: actor }),
+      roll: roll,
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL
+    });
   }
 }

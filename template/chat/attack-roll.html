@@ -1,0 +1,78 @@
+<div class="myrpg chat-card">
+    <header class="card-header flexrow">
+        <img src="{{actor.img}}" title="{{actor.name}}" width="36" height="36"/>
+        <h3>{{actor.name}} attaque {{target.name}}</h3>
+    </header>
+
+    <div class="card-content">
+        {{#if roll.total}}
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <h4 class="dice-total {{#if roll.total}}{{#if (gt roll.total 10)}}success{{else}}failure{{/if}}{{/if}}">
+                        {{roll.total}}
+                    </h4>
+                </div>
+            </div>
+
+            {{#if (gt roll.total 10)}}
+                <div class="result success">Touché!</div>
+            {{else}}
+                <div class="result failure">Raté!</div>
+            {{/if}}
+        {{/if}}
+    </div>
+</div>
+
+<style>
+.myrpg.chat-card {
+    font-style: normal;
+    font-size: 12px;
+}
+
+.card-header {
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.card-header img {
+    margin-right: 5px;
+    border: none;
+}
+
+.card-header h3 {
+    flex: 1;
+    margin: 0;
+    line-height: 36px;
+    color: #4b4a44;
+}
+
+.dice-roll .dice-total {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.dice-total.success {
+    color: #18520b;
+}
+
+.dice-total.failure {
+    color: #aa0200;
+}
+
+.result {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.result.success {
+    color: #18520b;
+}
+
+.result.failure {
+    color: #aa0200;
+}
+</style>
