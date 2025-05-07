@@ -1,0 +1,232 @@
+.myrpg.sheet.actor {
+  min-width: 600px;
+  min-height: 680px;
+}
+
+/* Header */
+.myrpg .sheet-header {
+  flex: 0 0 100px;
+  border-bottom: 2px solid #999;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.myrpg .profile-img {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
+  border: none;
+}
+
+.myrpg .header-fields {
+  flex: 1;
+  height: 100px;
+}
+
+.myrpg .charname {
+  height: 50px;
+  padding: 0;
+  margin: 0;
+}
+
+.myrpg .charname input {
+  width: 100%;
+  height: 100%;
+  font-size: 2em;
+}
+
+/* Navigation */
+.myrpg .sheet-navigation {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #999;
+}
+
+.myrpg .tabs {
+  flex: 0 0 30px;
+  font-size: 14px;
+  margin: 0 0 5px;
+  border-bottom: 1px solid #AAA;
+}
+
+.myrpg .tabs .item {
+  padding: 5px;
+  margin: 0 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.myrpg .tabs .item.active {
+  color: #000;
+  border-bottom: 3px solid #000;
+  text-shadow: none;
+}
+
+/* Grids */
+.myrpg .grid {
+  display: grid;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.myrpg .grid-2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.myrpg .grid-3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Level & XP */
+.myrpg .level-xp {
+  margin-bottom: 20px;
+}
+
+.myrpg .level-value,
+.myrpg .xp-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.myrpg .level-value input,
+.myrpg .xp-bar input {
+  width: 60px;
+  text-align: center;
+}
+
+.myrpg .max-level,
+.myrpg .xp-next {
+  color: #666;
+}
+
+/* Attributes */
+.myrpg .attribute {
+  border: 1px solid #999;
+  border-radius: 4px;
+  text-align: center;
+  padding: 10px;
+}
+
+.myrpg .attribute label {
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #444;
+}
+
+.myrpg .attribute-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.myrpg .attribute-value input {
+  width: 50px;
+  height: 28px;
+  text-align: center;
+}
+
+.myrpg .attribute-mod {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Resources */
+.myrpg .resource {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+}
+
+.myrpg .resource label {
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.myrpg .resource-value {
+  justify-content: center;
+  gap: 5px;
+}
+
+.myrpg .resource-value input {
+  width: 50px;
+  text-align: center;
+}
+
+/* Defenses */
+.myrpg .defense {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+}
+
+.myrpg .defense label {
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.myrpg .defense-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.myrpg .defense-source {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Inventory */
+.myrpg .inventory-capacity {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Footer */
+.myrpg .sheet-footer {
+  flex: 0;
+  margin-top: auto;
+  padding: 10px;
+  border-top: 2px solid #999;
+}
+
+.myrpg .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.myrpg .actions button {
+  flex: 1;
+  background: #4b4a44;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.myrpg .actions button:hover {
+  background: #6b6a64;
+}
+
+/* Inputs disabled */
+.myrpg input:disabled {
+  background: #f0f0f0;
+  color: #666;
+  border: 1px solid #ddd;
+}

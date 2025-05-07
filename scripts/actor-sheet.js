@@ -2,39 +2,82 @@ export class MyRPGActorSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["myrpg", "sheet", "actor"],
-      template: "systems/myrpg/template/actor-sheet.html",
+      template: "systems/myrpg/template/actor/character-sheet.html",
       width: 600,
-      height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "attributes" }]
+      height: 680,
+      tabs: [{ 
+        navSelector: ".sheet-tabs",
+        contentSelector: ".sheet-body",
+        initial: "stats"
+      }]
     });
   }
 
   getData() {
     const context = super.getData();
+    const actorData = this.actor;
 
-    // Ajout des données calculées
-    const actorData = this.actor.toObject(false);
+    // Préparer les données du personnage
     context.system = actorData.system;
-    
-    // S'assurer que les valeurs ne dépassent pas les maximums
-    context.system.resources.hp.value = Math.min(
-      context.system.resources.hp.value,
-      context.system.resources.hp.max
-    );
-    context.system.resources.ee.value = Math.min(
-      context.system.resources.ee.value,
-      context.system.resources.ee.max
-    );
+    context.flags = actorData.flags;
+
+    // Ajouter des informations dérivées pour l'affichage
+    this._prepareCharacterData(context);
 
     return context;
+  }
+
+  _prepareCharacterData(context) {
+    // Formater les attributs pour l'affichage
+    for (let [key, attribute] of Object.entries(context.system.attributes)) {
+      const mod = attribute - 5;
+      context.system.attributes[key] = {
+        value: attribute,
+        mod: mod,
+        label: game.i18n.localize(`MYRPG.Attribute${key.charAt(0).toUpperCase() + key.slice(1)}`)
+      };
+    }
+
+    // Formater les défenses
+    for (let [key, defense] of Object.entries(context.system.defenses)) {
+      context.system.defenses[key] = {
+        value: defense.value,
+        source: defense.source,
+        label: game.i18n.localize(`MYRPG.Defense${key.charAt(0).toUpperCase() + key.slice(1)}`)
+      };
+    }
+
+    // Préparer les informations d'XP
+    const xpData = context.system.xp;
+    const currentXP = xpData.value || 0;
+    const nextLevelXP = xpData.next;
+    const level = context.system.level;
+
+    context.system.xp = {
+      value: currentXP,
+      min: 0,
+      max: nextLevelXP,
+      pct: Math.min(Math.round((currentXP * 100) / nextLevelXP), 100)
+    };
+
+    // Formater l'inventaire
+    const inventory = context.system.inventory.capacity;
+    context.system.inventory = {
+      max: inventory.max,
+      used: inventory.used,
+      pct: Math.min(Math.round((inventory.used * 100) / inventory.max), 100)
+    };
   }
 
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Gestionnaires d'événements pour les boutons d'actions
+    // Actions de combat
     html.find('.roll-attack-mellee').click(this._onMeleeAttack.bind(this));
     html.find('.roll-attack-distance').click(this._onRangedAttack.bind(this));
+
+    // Modification des attributs
+    html.find('.attribute input').change(this._onAttributeChange.bind(this));
   }
 
   async _onMeleeAttack(event) {
@@ -42,21 +85,20 @@ export class MyRPGActorSheet extends ActorSheet {
     const target = game.user.targets.first()?.actor;
     
     if (!target) {
-      ui.notifications.warn("Vous devez sélectionner une cible");
+      ui.notifications.warn(game.i18n.localize("MYRPG.WarningNoTarget"));
       return;
     }
 
-    // Formule: 1d20 + CON - Fortitude de la cible
     const roll = await new Roll("1d20 + @con - @def", {
-      con: actor.system.attributes.con,
-      def: target.system.defenses.fortitude
+      con: actor.system.attributes.con.value,
+      def: target.system.defenses.fortitude.value
     }).evaluate({async: true});
 
-    // Message dans le chat
     const templateData = {
       actor: actor,
       target: target,
-      roll: roll
+      roll: roll,
+      attackType: game.i18n.localize("MYRPG.AttackMelee")
     };
 
     const content = await renderTemplate(
@@ -68,7 +110,8 @@ export class MyRPGActorSheet extends ActorSheet {
       content: content,
       speaker: ChatMessage.getSpeaker({ actor: actor }),
       roll: roll,
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      sound: CONFIG.sounds.dice
     });
   }
 
@@ -77,21 +120,20 @@ export class MyRPGActorSheet extends ActorSheet {
     const target = game.user.targets.first()?.actor;
     
     if (!target) {
-      ui.notifications.warn("Vous devez sélectionner une cible");
+      ui.notifications.warn(game.i18n.localize("MYRPG.WarningNoTarget"));
       return;
     }
 
-    // Formule: 1d20 + AGI - Evasion de la cible
     const roll = await new Roll("1d20 + @agi - @def", {
-      agi: actor.system.attributes.agi,
-      def: target.system.defenses.evasion
+      agi: actor.system.attributes.agi.value,
+      def: target.system.defenses.evasion.value
     }).evaluate({async: true});
 
-    // Message dans le chat
     const templateData = {
       actor: actor,
       target: target,
-      roll: roll
+      roll: roll,
+      attackType: game.i18n.localize("MYRPG.AttackRanged")
     };
 
     const content = await renderTemplate(
@@ -103,7 +145,18 @@ export class MyRPGActorSheet extends ActorSheet {
       content: content,
       speaker: ChatMessage.getSpeaker({ actor: actor }),
       roll: roll,
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      sound: CONFIG.sounds.dice
+    });
+  }
+
+  _onAttributeChange(event) {
+    const input = event.currentTarget;
+    const value = Math.clamped(parseInt(input.value), 1, 10);
+    const attributeName = input.name.split('.').pop();
+
+    this.actor.update({
+      [`system.attributes.${attributeName}`]: value
     });
   }
 }

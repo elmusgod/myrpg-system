@@ -14,10 +14,11 @@
     "discord": "elmusgod"
   }],
   "esmodules": [
+    "scripts/actor-models.js",
     "scripts/main.js"
   ],
   "styles": [
-    "template/actor-sheet.css"
+    "template/actor/character-sheet.css"
   ],
   "packs": [],
   "languages": [{

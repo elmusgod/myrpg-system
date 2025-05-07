@@ -1,5 +1,4 @@
 {
-  "MYRPG.AttributeStr": "Force",
   "MYRPG.AttributeCon": "Constitution",
   "MYRPG.AttributeInt": "Intelligence",
   "MYRPG.AttributeAgi": "Agilité",
@@ -8,7 +7,20 @@
   "MYRPG.DefenseFortitude": "Fortitude",
   "MYRPG.DefenseEvasion": "Évasion",
   "MYRPG.Level": "Niveau",
+  "MYRPG.Experience": "Expérience",
+  "MYRPG.NextLevel": "Niveau suivant",
   "MYRPG.Race": "Race",
   "MYRPG.AttackMelee": "Attaque Mêlée",
-  "MYRPG.AttackRanged": "Attaque Distance"
+  "MYRPG.AttackRanged": "Attaque Distance",
+  "MYRPG.Inventory": "Inventaire",
+  "MYRPG.Features": "Capacités",
+  "MYRPG.Stats": "Statistiques",
+  "MYRPG.InventoryCapacity": "Capacité d'inventaire",
+  "MYRPG.WarningNoTarget": "Vous devez sélectionner une cible",
+  "MYRPG.Hit": "Touché !",
+  "MYRPG.Miss": "Raté !",
+  "MYRPG.AttackRoll": "Jet d'attaque",
+  "MYRPG.DamageRoll": "Jet de dégâts",
+  "MYRPG.Modifier": "Modificateur",
+  "MYRPG.Total": "Total"
 }
