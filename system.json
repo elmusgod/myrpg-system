@@ -1,23 +1,50 @@
 {
   "id": "myrpg",
-  "name": "MyRPG",
+  "title": "MyRPG System",
+  "description": "Un système médiéval-fantastique à 3 attributs, sans classes ni sorts prédéfinis.",
   "version": "0.1.0",
-  "template": "template/actor-sheet.html",
-  "entityTypes": ["Actor", "Item"],
-  "actors": [
-    {
-      "name": "Default Actor",
-      "type": "character",
-      "img": "icons/svg/mystery-man.svg",
-      "sheet": "scripts/actor-sheet.js"
-    }
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "12"
+  },
+  "authors": [{
+    "name": "Your Name",
+    "url": "https://github.com/yourusername/myrpg-system",
+    "discord": "Your Discord"
+  }],
+  "esmodules": [
+    "scripts/main.js"
   ],
-  "items": [
-    {
-      "name": "Default Item",
-      "type": "ability",
-      "img": "icons/svg/book.svg",
-      "data": {}
+  "styles": [
+    "template/actor-sheet.css"
+  ],
+  "packs": [],
+  "languages": [{
+    "lang": "fr",
+    "name": "Français",
+    "path": "lang/fr.json"
+  }],
+  "documentTypes": {
+    "Actor": {
+      "character": {
+        "htmlFields": ["biography"]
+      }
+    },
+    "Item": {
+      "ability": {},
+      "race": {}
     }
-  ]
+  },
+  "socket": false,
+  "initiative": "1d20",
+  "grid": {
+    "distance": 1.5,
+    "units": "m"
+  },
+  "primaryTokenAttribute": "resources.hp",
+  "secondaryTokenAttribute": "resources.ee",
+  "url": "https://github.com/yourusername/myrpg-system",
+  "manifest": "https://raw.githubusercontent.com/yourusername/myrpg-system/main/system.json",
+  "download": "https://github.com/yourusername/myrpg-system/archive/refs/heads/main.zip"
 }
