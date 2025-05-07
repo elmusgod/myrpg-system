@@ -4,9 +4,9 @@
   "description": "Un système médiéval-fantastique à 3 attributs, sans classes ni sorts prédéfinis.",
   "version": "0.1.0",
   "compatibility": {
-    "minimum": "11.0.0",
-    "verified": "11.315",
-    "maximum": "11.999"
+    "minimum": "13.0.0",
+    "verified": "13",
+    "maximum": "13.999"
   },
   "authors": [{
     "name": "Your Name",
