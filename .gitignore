@@ -1,0 +1,21 @@
+# Dossiers node
+node_modules/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fichiers de build
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*

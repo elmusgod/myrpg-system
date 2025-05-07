@@ -1,0 +1,23 @@
+{
+  "id": "myrpg",
+  "name": "MyRPG",
+  "version": "0.1.0",
+  "template": "template/actor-sheet.html",
+  "entityTypes": ["Actor", "Item"],
+  "actors": [
+    {
+      "name": "Default Actor",
+      "type": "character",
+      "img": "icons/svg/mystery-man.svg",
+      "sheet": "scripts/actor-sheet.js"
+    }
+  ],
+  "items": [
+    {
+      "name": "Default Item",
+      "type": "ability",
+      "img": "icons/svg/book.svg",
+      "data": {}
+    }
+  ]
+}

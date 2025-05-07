@@ -1,0 +1,22 @@
+<form>
+  <section>
+    <h2>Attributs</h2>
+    {{#each data.attributes as |val att|}}
+      <div>{{att}} : {{val}}</div>
+    {{/each}}
+  </section>
+  <section>
+    <h2>Défenses</h2>
+    <div>Fortitude : {{data.defenses.fortitude}}</div>
+    <div>Evasion   : {{data.defenses.evasion}}</div>
+  </section>
+  <section>
+    <h2>Ressources</h2>
+    <div>ÉE : {{data.resources.ee.value}} / {{data.resources.ee.max}}</div>
+    <div>PV : {{data.resources.hp.value}} / {{data.resources.hp.max}}</div>
+  </section>
+  <section class="actions">
+    <button type="button" class="roll-attack-mellee">Attaque Mêlée</button>
+    <button type="button" class="roll-attack-distance">Attaque Distance</button>
+  </section>
+</form>
