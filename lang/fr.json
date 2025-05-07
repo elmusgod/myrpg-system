@@ -1,0 +1,14 @@
+{
+  "MYRPG.AttributeStr": "Force",
+  "MYRPG.AttributeCon": "Constitution",
+  "MYRPG.AttributeInt": "Intelligence",
+  "MYRPG.AttributeAgi": "Agilité",
+  "MYRPG.ResourceHP": "Points de Vie",
+  "MYRPG.ResourceEE": "Énergie d'Élan",
+  "MYRPG.DefenseFortitude": "Fortitude",
+  "MYRPG.DefenseEvasion": "Évasion",
+  "MYRPG.Level": "Niveau",
+  "MYRPG.Race": "Race",
+  "MYRPG.AttackMelee": "Attaque Mêlée",
+  "MYRPG.AttackRanged": "Attaque Distance"
+}

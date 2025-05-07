@@ -22,7 +22,7 @@ myrpg-system/
 │  ├─ main.js            ← chargement du système
 │  └─ actor-sheet.js     ← logique de la feuille d’acteur
 ├─ lang/
-│  └─ en.json            ← traductions (facultatif)
+│  └─ en.json            ← traductions (facultatif ne pas inclure )
 └─ README.md             ← ce document
 ```
 
