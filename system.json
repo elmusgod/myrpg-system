@@ -9,9 +9,9 @@
     "maximum": "13.999"
   },
   "authors": [{
-    "name": "Your Name",
-    "url": "https://github.com/yourusername/myrpg-system",
-    "discord": "Your Discord"
+    "name": "elmusgod",
+    "url": "https://github.com/elmusgod/myrpg-system",
+    "discord": "elmusgod"
   }],
   "esmodules": [
     "scripts/main.js"
@@ -44,7 +44,7 @@
   },
   "primaryTokenAttribute": "resources.hp",
   "secondaryTokenAttribute": "resources.ee",
-  "url": "https://github.com/yourusername/myrpg-system",
-  "manifest": "https://raw.githubusercontent.com/yourusername/myrpg-system/main/system.json",
-  "download": "https://github.com/yourusername/myrpg-system/archive/refs/heads/main.zip"
+  "url": "https://github.com/elmusgod/myrpg-system",
+  "manifest": "https://raw.githubusercontent.com/elmusgod/myrpg-system/main/system.json",
+  "download": "https://github.com/elmusgod/myrpg-system/releases/latest/download/module.zip"
 }
