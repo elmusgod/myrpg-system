@@ -30,43 +30,51 @@ export class MyRPGActorSheet extends ActorSheet {
   _prepareCharacterData(context) {
     // Formater les attributs pour l'affichage
     for (let [key, attribute] of Object.entries(context.system.attributes)) {
-      const mod = attribute - 5;
-      context.system.attributes[key] = {
-        value: attribute,
-        mod: mod,
-        label: game.i18n.localize(`MYRPG.Attribute${key.charAt(0).toUpperCase() + key.slice(1)}`)
-      };
+      if (typeof attribute === 'number') {
+        const mod = attribute - 5;
+        context.system.attributes[key] = {
+          value: attribute,
+          mod: mod,
+          label: game.i18n.localize(`MYRPG.Attribute${key.charAt(0).toUpperCase() + key.slice(1)}`)
+        };
+      }
     }
 
     // Formater les défenses
     for (let [key, defense] of Object.entries(context.system.defenses)) {
-      context.system.defenses[key] = {
-        value: defense.value,
-        source: defense.source,
-        label: game.i18n.localize(`MYRPG.Defense${key.charAt(0).toUpperCase() + key.slice(1)}`)
-      };
+      if (defense.value !== undefined) {
+        context.system.defenses[key] = {
+          value: defense.value,
+          source: defense.source,
+          label: game.i18n.localize(`MYRPG.Defense${key.charAt(0).toUpperCase() + key.slice(1)}`)
+        };
+      }
     }
 
     // Préparer les informations d'XP
-    const xpData = context.system.xp;
-    const currentXP = xpData.value || 0;
-    const nextLevelXP = xpData.next;
-    const level = context.system.level;
+    if (context.system.xp) {
+      const xpData = context.system.xp;
+      const currentXP = xpData.value || 0;
+      const nextLevelXP = xpData.next;
+      const level = context.system.level;
 
-    context.system.xp = {
-      value: currentXP,
-      min: 0,
-      max: nextLevelXP,
-      pct: Math.min(Math.round((currentXP * 100) / nextLevelXP), 100)
-    };
+      context.system.xp = {
+        value: currentXP,
+        min: 0,
+        max: nextLevelXP,
+        pct: Math.min(Math.round((currentXP * 100) / nextLevelXP), 100)
+      };
+    }
 
     // Formater l'inventaire
-    const inventory = context.system.inventory.capacity;
-    context.system.inventory = {
-      max: inventory.max,
-      used: inventory.used,
-      pct: Math.min(Math.round((inventory.used * 100) / inventory.max), 100)
-    };
+    if (context.system.inventory?.capacity) {
+      const inventory = context.system.inventory.capacity;
+      context.system.inventory = {
+        max: inventory.max,
+        used: inventory.used,
+        pct: Math.min(Math.round((inventory.used * 100) / inventory.max), 100)
+      };
+    }
   }
 
   activateListeners(html) {
